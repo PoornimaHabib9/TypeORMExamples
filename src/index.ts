@@ -1,18 +1,21 @@
 import "reflect-metadata";
 import express from 'express'
 import notes from './routes/notes'
-import { createConnection } from "typeorm";
+import { createConnection, createConnections } from "typeorm";
 import cors from 'cors'
 import bodyParser from 'body-parser'
 import courses from "./routes/course";
+import users from "./routes/users";
+import employee from "./routes/employee";
+import person from "./routes/person";
 
-const PORT = "3001"
+const PORT = "3000"
 
 const options:cors.CorsOptions={
     origin:['http://localhost:3002']
 }
 
-createConnection().then(connection => {
+createConnections().then(connection => {
     let app = express()
     app.use(bodyParser.urlencoded({ extended: false }))
     app.use(bodyParser.json())
@@ -20,9 +23,12 @@ createConnection().then(connection => {
 
     app.use('/notes', notes)
     app.use('/course',courses)
+    app.use('/employee',employee)
+    app.use('/user',users)
+    app.use('/person',person)
 
     app.listen(PORT, () => {
-        console.log("listen in port 3001")
+        console.log(`listen in port ${PORT}`)
     })
 })
 
